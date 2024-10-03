@@ -19,7 +19,7 @@ Il codice verrà sviluppato usando Visual Studio Code. I file di codice per l'ap
 1. Avviare Visual Studio Code.
 2. Aprire il riquadro comandi (MAIUSC+CTRL+P) ed eseguire un comando **Git: Clone** per clonare il repository `https://github.com/MicrosoftLearning/mslearn-ai-services` in una cartella locale. Non è importante usare una cartella specifica.
 3. Dopo la clonazione del repository, aprire la cartella in Visual Studio Code.
-4. Attendere il completamento dell'installazione di file aggiuntivi per supportare i progetti in codice C# nel repository, se necessario
+4. Attendere l'installazione di file aggiuntivi per supportare i progetti di codice C# nel repository, se necessario
 
     > **Nota**: se viene richiesto di aggiungere gli asset necessari per la compilazione e il debug, selezionare **Non adesso**.
 
@@ -43,13 +43,16 @@ Se non è già disponibile nella sottoscrizione, sarà necessario effettuare il 
 
 ## Gestire le chiavi di autenticazione
 
-Quando è stata creata la risorsa di Servizi di Azure AI, sono state generate due chiavi di autenticazione. È possibile gestirle nel portale di Azure o tramite l'interfaccia della riga di comando di Azure.
+Quando è stata creata la risorsa di Servizi di Azure AI, sono state generate due chiavi di autenticazione. È possibile gestirle nel portale di Azure o tramite l'interfaccia della riga di comando di Azure. 
 
-1. Nel portale di Azure passare alla risorsa di Servizi di Azure AI e visualizzare la relativa pagina **Chiavi ed endpoint**. Questa pagina contiene le informazioni necessarie per connettersi alla risorsa e usarla dalle applicazioni sviluppate. In particolare:
+1. Scegliere un metodo per ottenere le chiavi di autenticazione e l'endpoint: 
+
+    **Usando il portale di Azure**: nel portale di Azure passare alla risorsa di Servizi di Azure AI e visualizzare la relativa pagina **Chiavi ed endpoint**. Questa pagina contiene le informazioni necessarie per connettersi alla risorsa e usarla dalle applicazioni sviluppate. In particolare:
     - Un *endpoint* HTTP a cui le applicazioni client possono inviare richieste.
     - Due *chiavi* che possono essere usate per l'autenticazione (le applicazioni client possono usare entrambe le chiavi. Una pratica comune consiste nell'usarne una per lo sviluppo e un'altra per la produzione. È possibile rigenerare facilmente la chiave di sviluppo dopo che gli sviluppatori hanno terminato il lavoro per impedire l'accesso continuo).
     - La *località* in cui è ospitata la risorsa. Questa informazione è necessaria per le richieste ad alcune API, ma non a tutte.
-2. È ora possibile usare il comando seguente per ottenere l'elenco delle chiavi di Servizi di Azure AI, sostituendo *&lt;resourceName&gt;* con il nome della risorsa di Servizi di Azure AI e *&lt;resourceGroup&gt;* con il nome del gruppo di risorse in cui è stata creata.
+
+    **Usando la riga di comando**: in alternativa, è possibile usare il comando seguente per ottenere l'elenco delle chiavi dei Servizi di Azure AI. In Visual Studio Code, aprire un nuovo terminale. Quindi incollarla nel comando seguente, sostituendo *&lt;resourceName&gt;* con il nome della risorsa di Servizi di Azure AI e *&lt;resourceGroup&gt;* con il nome del gruppo di risorse in cui è stata creata.
 
     ```
     az cognitiveservices account keys list --name <resourceName> --resource-group <resourceGroup>
@@ -57,15 +60,15 @@ Quando è stata creata la risorsa di Servizi di Azure AI, sono state generate du
 
     Il comando restituisce un elenco delle chiavi per la risorsa di Servizi di Azure AI. Sono presenti due chiavi denominate **key1** e **key2**.
 
-    > **Suggerimento**: Se l'interfaccia della riga di comando di Azure non è ancora stata autenticata, eseguire `az login` e accedere all'account.
+    > **Suggerimento**: se l'interfaccia della riga di comando di Azure non è ancora stata autenticata, eseguire prima `az login` e accedere all'account.
 
-3. Per testare i Servizi di Azure AI, è possibile usare **curl**, uno strumento da riga di comando per le richieste HTTP. Nella cartella **02-ai-services-security** aprire **rest-test.cmd** e modificare il comando **curl** in esso contenuto (illustrato di seguito), sostituendo *&lt;yourEndpoint&gt;* e *&lt;yourKey&gt;* con l'URI dell'endpoint e la chiave **Key1** per usare l'API Analisi del testo nella risorsa di Servizi di Azure AI.
+2. Per testare i Servizi di Azure AI, è possibile usare **curl**, uno strumento da riga di comando per le richieste HTTP. Nella cartella **02-ai-services-security** aprire **rest-test.cmd** e modificare il comando **curl** in esso contenuto (illustrato di seguito), sostituendo *&lt;yourEndpoint&gt;* e *&lt;yourKey&gt;* con l'URI dell'endpoint e la chiave **Key1** per usare l'API Analisi del testo nella risorsa di Servizi di Azure AI.
 
     ```bash
-    curl -X POST "<yourEndpoint>/language/:analyze-text?api-version=2023-04-01" -H "Content-Type: application/json" -H "Ocp-Apim-Subscription-Key: 81468b6728294aab99c489664a818197" --data-ascii "{'analysisInput':{'documents':[{'id':1,'text':'hello'}]}, 'kind': 'LanguageDetection'}"
+    curl -X POST "<yourEndpoint>/language/:analyze-text?api-version=2023-04-01" -H "Content-Type: application/json" -H "Ocp-Apim-Subscription-Key: <your-key>" --data-ascii "{'analysisInput':{'documents':[{'id':1,'text':'hello'}]}, 'kind': 'LanguageDetection'}"
     ```
 
-4. Salvare le modifiche e quindi eseguire il comando seguente:
+3. Salva le modifiche. Nel terminale passare alla cartella "02-ai-services-security". **Nota**: è possibile farlo facendo clic con il pulsante destro del mouse sulla cartella "02-ai-services-security" in Explorer e scegliendo *Apri nel terminale integrato*. Poi eseguire quindi il comando seguente.
 
     ```
     ./rest-test.cmd
@@ -73,7 +76,7 @@ Quando è stata creata la risorsa di Servizi di Azure AI, sono state generate du
 
 Il comando restituisce un documento JSON contenente informazioni sulla lingua rilevata nei dati di input (che sarà l'inglese).
 
-5. Se una chiave viene compromessa o gli sviluppatori che la possiedono non richiedono più l'accesso, è possibile rigenerarla nel portale o tramite l'interfaccia della riga di comando di Azure. Eseguire il comando seguente per rigenerare la **chiave key1** (sostituendo *&lt;resourceName&gt;* e *&lt;resourceGroup&gt;* per la risorsa).
+4. Se una chiave viene compromessa o gli sviluppatori che la possiedono non richiedono più l'accesso, è possibile rigenerarla nel portale o tramite l'interfaccia della riga di comando di Azure. Eseguire il comando seguente per rigenerare la **chiave key1** (sostituendo *&lt;resourceName&gt;* e *&lt;resourceGroup&gt;* per la risorsa).
 
     ```
     az cognitiveservices account keys regenerate --name <resourceName> --resource-group <resourceGroup> --key-name key1
@@ -81,8 +84,8 @@ Il comando restituisce un documento JSON contenente informazioni sulla lingua ri
 
 Viene restituito l'elenco delle chiavi per la risorsa di Servizi di Azure AI. Si noti che **key1** è cambiato dall'ultimo recupero.
 
-6. Eseguire nuovamente il comando **rest-test** con la vecchia chiave (è possibile usare la freccia **^** per scorrere i comandi precedenti) e verificare che ora abbia esito negativo.
-7. Modificare il comando *curl* in **rest-test.cmd** sostituendo la chiave con il nuovo valore **key1** e salvare le modifiche. Eseguire quindi di nuovo il comando **rest-test** e verificare che abbia esito positivo.
+5. Eseguire nuovamente il comando **rest-test** con la vecchia chiave (è possibile usare la freccia **^** per scorrere i comandi precedenti) e verificare che ora abbia esito negativo.
+6. Modificare il comando *curl* in **rest-test.cmd** sostituendo la chiave con il nuovo valore **key1** e salvare le modifiche. Eseguire quindi di nuovo il comando **rest-test** e verificare che abbia esito positivo.
 
 > **Suggerimento:** in questo esercizio sono stati usati i nomi completi dei parametri dell'interfaccia della riga di comando di Azure, ad esempio **--resource-group**.  È anche possibile usare alternative più brevi, ad esempio **-g**, per rendere i comandi meno dettagliati (ma un po' più difficili da comprendere).  Il [Riferimento ai comandi dell'interfaccia della riga di comando di Servizi di Azure AI](https://docs.microsoft.com/cli/azure/cognitiveservices?view=azure-cli-latest) elenca le opzioni dei parametri per ogni comando dell'interfaccia della riga di comando di Servizi di Azure AI.
 
@@ -113,7 +116,7 @@ Prima di tutto, è necessario creare un insieme di credenziali delle chiavi e ag
 5. Selezionare **+ Genera/Importa** e aggiungere un nuovo segreto con le impostazioni seguenti:
     - **Opzioni di caricamento**: Manuale
     - **Nome**: AI-Services-Key * (è importante che corrisponda esattamente, perché in seguito si eseguirà il codice che recupera il segreto in base a questo nome)*
-    - **Valore**: *Key1** dei Servizi di Azure AI **dell'utente*
+    - **Valore segreto**: *la chiave **key1** dei Servizi di Azure AI dell'utente*
 6. Seleziona **Crea**.
 
 ### Creare un'entità servizio
@@ -167,16 +170,16 @@ A questo punto è possibile usare l'identità dell'entità servizio in un'applic
 
     ```
     dotnet add package Azure.AI.TextAnalytics --version 5.3.0
-    dotnet add package Azure.Identity --version 1.5.0
-    dotnet add package Azure.Security.KeyVault.Secrets --version 4.2.0-beta.3
+    dotnet add package Azure.Identity --version 1.12.0
+    dotnet add package Azure.Security.KeyVault.Secrets --version 4.6.0
     ```
 
     **Python**
 
     ```
     pip install azure-ai-textanalytics==5.3.0
-    pip install azure-identity==1.5.0
-    pip install azure-keyvault-secrets==4.2.0
+    pip install azure-identity==1.17.1
+    pip install azure-keyvault-secrets==4.8.0
     ```
 
 3. Visualizzare il contenuto della cartella **keyvault-client** e notare che include un file per le impostazioni di configurazione:
