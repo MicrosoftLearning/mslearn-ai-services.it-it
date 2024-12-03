@@ -42,9 +42,9 @@ Se non è già disponibile nella sottoscrizione, sarà necessario effettuare il 
 4. Attendere il completamento della distribuzione e quindi visualizzare i relativi dettagli.
 5. Al termine della distribuzione, passare alla risorsa e visualizzare la rispettiva pagina **Chiavi ed endpoint**. Nella procedura successiva saranno necessari l'endpoint e una delle chiavi indicate in questa pagina.
 
-## Distribuire ed eseguire un contenitore Analisi del testo
+## Distribuire ed eseguire un contenitore di analisi del sentiment
 
-Molte API dei Servizi di Azure AI di uso comune sono disponibili nelle immagini del contenitore. Per un elenco completo, vedere la [documentazione dei Servizi di Azure AI](https://docs.microsoft.com/azure/cognitive-services/cognitive-services-container-support#container-availability-in-azure-cognitive-services). In questo esercizio si userà l'immagine del contenitore per l'API di *rilevamento lingua* di Analisi del testo, ma i principi sono gli stessi per tutte le immagini disponibili.
+Molte API dei Servizi di Azure AI di uso comune sono disponibili nelle immagini del contenitore. Per un elenco completo, vedere la [documentazione dei Servizi di Azure AI](https://learn.microsoft.com/en-us/azure/ai-services/cognitive-services-container-support#containers-in-azure-ai-services). In questo esercizio si userà l'immagine del contenitore per l'API di *Analisi del sentiment* di Analisi del testo, ma i principi sono gli stessi per tutte le immagini disponibili.
 
 1. Nella pagina **Home** del portale di Azure selezionare il pulsante **&#65291;Crea una risorsa**, cercare *istanze di contenitore* e creare una risorsa **Istanze di Container** con le impostazioni seguenti:
 
@@ -53,11 +53,13 @@ Molte API dei Servizi di Azure AI di uso comune sono disponibili nelle immagini 
         - **Gruppo di risorse**: *Scegliere il gruppo di risorse contenente la risorsa dei Servizi di Azure AI*
         - **Nome contenitore**: *immettere un nome univoco*
         - **Area**: *scegliere una qualsiasi area disponibile*
+        - **Zone di disponibilità**: Nessuna
+        - **SKU**: Standard
         - **Origine immagine**: Altro registro
         - **Tipo di immagine**: Pubblico
-        - **Immagine**: `mcr.microsoft.com/azure-cognitive-services/textanalytics/language:latest`
+        - **Immagine**: `mcr.microsoft.com/azure-cognitive-services/textanalytics/sentiment:latest`
         - **Tipo di sistema operativo**: Linux
-        - **Dimensioni**: 1 vcpu, 12 GB di memoria
+        - **Dimensioni**: 1 vCPU, 8 GB di memoria
     - **Rete**:
         - **Tipo di rete**: Pubblico
         - **Etichetta del nome DNS**: *immettere un nome univoco per l'endpoint contenitore*
@@ -73,6 +75,7 @@ Molte API dei Servizi di Azure AI di uso comune sono disponibili nelle immagini 
             | No | `Eula` | `accept` |
 
         - **Override comando**: [ ]
+        - **Gestione delle chiavi**: Chiavi gestite da Microsoft (MMK)
     - **Tag:**
         - *Non aggiungere tag*
 
@@ -83,11 +86,11 @@ Molte API dei Servizi di Azure AI di uso comune sono disponibili nelle immagini 
     - **Indirizzo IP**: indirizzo IP pubblico che è possibile usare per accedere alle istanze di contenitore.
     - **FQDN**: *nome di dominio completo* della risorsa delle istanze di contenitore. È possibile usarlo in alternativa all'indirizzo IP per accedere alle istanze di contenitore.
 
-    > **Nota**: In questo esercizio è stata distribuita l'immagine del contenitore di Servizi di Azure AI per la traduzione testo in una risorsa di Istanze di Azure Container. È possibile usare un approccio simile per distribuirlo in un host *[Docker](https://www.docker.com/products/docker-desktop)* nel computer o nella rete eseguendo il comando seguente (su una singola riga) per distribuire il contenitore di rilevamento lingua nell'istanza di Docker locale, sostituendo *&lt;yourEndpoint&gt;* e *&lt;yourKey&gt;* con l'URI dell'endpoint e una delle chiavi per la risorsa di Servizi di Azure AI.
+    > **Nota**: in questo esercizio è stata distribuita l'immagine del contenitore di Servizi di Azure AI per l'analisi del sentiment in una risorsa di Istanze di Azure Container. È possibile usare un approccio simile per distribuirlo in un host *[Docker](https://www.docker.com/products/docker-desktop)* nel computer o nella rete eseguendo il comando seguente (su una singola riga) per distribuire il contenitore di analisi del sentiment nell'istanza di Docker locale, sostituendo *&lt;yourEndpoint&gt;* e *&lt;yourKey&gt;* con l'URI dell'endpoint e una delle chiavi per la risorsa di Servizi di Azure AI.
     > Il comando cerca l'immagine nel computer locale e, se non la trova, la estrae dal registro immagini *mcr.microsoft.com* e la distribuisce nell'istanza di Docker. Al termine della distribuzione, il contenitore verrà avviato e sarà in ascolto delle richieste in ingresso sulla porta 5000.
 
     ```
-    docker run --rm -it -p 5000:5000 --memory 12g --cpus 1 mcr.microsoft.com/azure-cognitive-services/textanalytics/language:latest Eula=accept Billing=<yourEndpoint> ApiKey=<yourKey>
+    docker run --rm -it -p 5000:5000 --memory 8g --cpus 1 mcr.microsoft.com/azure-cognitive-services/textanalytics/sentiment:latest Eula=accept Billing=<yourEndpoint> ApiKey=<yourKey>
     ```
 
 ## Usare il contenitore
@@ -95,7 +98,7 @@ Molte API dei Servizi di Azure AI di uso comune sono disponibili nelle immagini 
 1. Nel proprio editor, aprire **rest-test.cmd** e modificare il comando **curl** contenuto (mostrato di seguito), sostituendo *&lt;your_ACI_IP_address_or_FQDN&gt;* con l'indirizzo IP o il nome di dominio completo (FQDN) del contenitore.
 
     ```
-    curl -X POST "http://<your_ACI_IP_address_or_FQDN>:5000/text/analytics/v3.0/languages" -H "Content-Type: application/json" --data-ascii "{'documents':[{'id':1,'text':'Hello world.'},{'id':2,'text':'Salut tout le monde.'}]}"
+    curl -X POST "http://<your_ACI_IP_address_or_FQDN>:5000/text/analytics/v3.1/sentiment" -H "Content-Type: application/json" --data-ascii "{'documents':[{'id':1,'text':'The performance was amazing! The sound could have been clearer.'},{'id':2,'text':'The food and service were unacceptable. While the host was nice, the waiter was rude and food was cold.'}]}"
     ```
 
 2. Salvare le modifiche apportate allo script premendo **CTRL+S**. Tenere presente che non è necessario specificare l'endpoint o la chiave di Servizi di Azure AI. La richiesta viene elaborata dal servizio in contenitori. A sua volta, il contenitore comunica periodicamente con il servizio in Azure per segnalare l'utilizzo ai fini della fatturazione, ma non invia i dati della richiesta.
@@ -105,7 +108,7 @@ Molte API dei Servizi di Azure AI di uso comune sono disponibili nelle immagini 
     ./rest-test.cmd
     ```
 
-4. Verificare che il comando restituisca un documento JSON contenente informazioni sulla lingua rilevata nei due documenti di input (che devono essere inglese e francese).
+4. Verificare che il comando restituisca un documento JSON contenente informazioni sul sentiment rilevato nei due documenti di input (che devono essere positivo e negativo, in quest'ordine).
 
 ## Eseguire la pulizia
 
