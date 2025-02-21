@@ -28,7 +28,7 @@ Il codice verrà sviluppato usando Visual Studio Code. I file di codice per l'ap
 Se non è già disponibile nella sottoscrizione, sarà necessario effettuare il provisioning di una risorsa di **Servizi di Azure AI**.
 
 1. Aprire il portale di Azure all'indirizzo `https://portal.azure.com` ed eseguire l'accesso usando l'account Microsoft associato alla sottoscrizione di Azure.
-2. Nella barra di ricerca superiore cercare *Servizi di Azure AI*, selezionare **Servizi di Azure AI** e creare una risorsa account multiservizio di Servizi di Azure AI con le impostazioni seguenti:
+2. Nella barra di ricerca superiore, cercare *Servizi di Azure AI*, selezionare **Account multiservizio di Servizi di Azure AI** e creare una risorsa con le impostazioni seguenti:
     - **Sottoscrizione**: *la sottoscrizione di Azure usata*
     - **Gruppo di risorse**: *scegliere o creare un gruppo di risorse. Se si usa una sottoscrizione con restrizioni, si potrebbe non essere autorizzati a creare un nuovo gruppo di risorse. Usare quello fornito*
     - **Area**: *scegliere una qualsiasi area disponibile*
