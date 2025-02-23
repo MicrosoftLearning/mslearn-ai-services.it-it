@@ -29,7 +29,7 @@ Se non è già disponibile, sarà necessario effettuare il provisioning di una r
 
 ## Usare le protezioni delle richieste di Sicurezza dei contenuti di Azure AI
 
-In questo esercizio si userà Studio AI della piattaforma Azure per testare le protezioni delle richieste di sicurezza dei contenuti con due input di esempio. Uno simula una richiesta dell'utente e l'altro simula un documento con testo potenzialmente non sicuro incorporato.
+In questo esercizio Studio AI della piattaforma Azure verrà utilizzato per testare le protezioni delle richieste di sicurezza dei contenuti con due input di esempio. Uno simula una richiesta dell'utente e l'altro simula un documento con testo potenzialmente non sicuro incorporato.
 
 1. In un'altra scheda del browser, aprire la pagina Sicurezza dei contenuti di [Studio AI della piattaforma Azure](https://ai.azure.com/explore/contentsafety) e accedere.
 1. Selezionare **Prova** in **Moderare il contenuto di testo**.
