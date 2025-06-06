@@ -1,10 +1,14 @@
-#README
+# Sviluppare soluzioni di intelligenza artificiale generativa in Azure
 
-We've turned off the ability to report issues directly on this repo and do not monitor PRs.
+Gli esercizi in questo repository sono progettati per offrire un'esperienza di apprendimento pratica in cui verranno esaminate le attività comuni eseguite dagli sviluppatori durante la creazione di soluzioni di IA generativa con Microsoft Azure.
 
-Provide feedback here: https://aka.ms/provide-feedback
+> **Nota**: per completare gli esercizi, è necessaria una sottoscrizione di Azure in cui si dispone di autorizzazioni e quote sufficienti per effettuare il provisioning delle risorse di Azure e dei modelli di IA generativa necessari. Creazione di un [account di Azure](https://azure.microsoft.com/free), se non già disponibile. È disponibile un'opzione di versione gratuita per i nuovi utenti che include crediti per i primi 30 giorni.
 
-Or, if you are a trainer with a microsoft.com email address, please create a ticket in AzDO.
+Visualizzare gli esercizi nel [sito GitHub Pages per questo repository](https://microsoftlearning.github.io/mslearn-ai-services/).
 
-# mslearn-ai-services
-File di lab per i moduli sui Servizi di Azure AI
+
+> **Note**: anche se è possibile completare questi esercizi autonomamente, questi sono progettati per integrare i moduli in [Microsoft Learn](https://learn.microsoft.com/training/paths/get-started-azure-ai/), in cui è possibile approfondire alcuni dei concetti sottostanti su cui essi si basano.
+
+## Segnalazione di problemi
+
+Se si verificano problemi negli esercizi, segnalarli come **problemi** in questo repository.
