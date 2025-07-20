@@ -97,6 +97,9 @@ Viene restituito l'elenco delle chiavi per la risorsa di Servizi di Azure AI. Si
 
 Prima di tutto, è necessario creare un insieme di credenziali delle chiavi e aggiungere un *segreto* per la chiave di Servizi di Azure AI.
 
+Scegliere un metodo per creare un insieme di credenziali delle chiavi e aggiungere un segreto:
+
+#### Uso del portale di Azure
 1. Prendere nota del valore **key1** per la risorsa di Servizi di Azure AI o copiarlo negli Appunti.
 2. Nella pagina **Home** del portale di Azure selezionare il pulsante **&#65291;Crea una risorsa**, cercare *Key Vault* e creare una risorsa **Key Vault** con le impostazioni seguenti:
 
@@ -118,6 +121,33 @@ Prima di tutto, è necessario creare un insieme di credenziali delle chiavi e ag
     - **Nome**: AI-Services-Key * (è importante che corrisponda esattamente, perché in seguito si eseguirà il codice che recupera il segreto in base a questo nome)*
     - **Valore segreto**: *la chiave **key1** dei Servizi di Azure AI dell'utente*
 6. Selezionare **Crea**.
+
+#### Usare l'interfaccia della riga di comando di Azure
+In alternativa, è possibile usare l'interfaccia della riga di comando di Azure per creare un insieme di credenziali delle chiavi e aggiungere un segreto.
+
+1. Aprire una finestra del terminale in Visual Studio Code.
+2. Creare un insieme di credenziali delle chiavi eseguendo il comando seguente, sostituendo `<keyVaultName>`, `<resourceGroup>` e `<location>` con il nome dell'insieme di credenziali delle chiavi desiderato, il nome del gruppo di risorse e l'area di Azure, ad esempio `eastus`:
+
+    ```
+    az keyvault create \
+      --name <key-vault-name> \
+      --resource-group <resource-group-name> \
+      --location <region> \
+      --sku standard \
+      --enable-rbac-authorization false
+    ```
+    Il flag `--enable-rbac-authorization false` assicura che il modello di autorizzazione sia impostato su "Criteri di accesso all'insieme di credenziali" (impostazione predefinita).
+
+3. Aggiungere la chiave dei Servizi di Azure AI come segreto nell'insieme di credenziali delle chiavi. Sostituire `<keyVaultName>` con il nome dell'insieme di credenziali delle chiavi e `<your-key1-value>` con il valore della chiave1 dei Servizi di Azure AI:
+
+    ```
+    az keyvault secret set \
+    --vault-name <key-vault-name> \
+    --name AI-Services-Key \
+    --value <your-azure-ai-services-key>
+    ```
+
+A questo punto è stato creato un insieme di credenziali delle chiavi e la chiave dei Servizi di Azure AI è stata archiviata come segreto denominato `AI-Services-Key`.
 
 ### Creare un'entità servizio
 
